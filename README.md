@@ -12,13 +12,13 @@ Users: Parents of infants and the Doctors
 Description: A web interface to track the health of neonatal infants. Each child has a profile, and there is a login for parents and for doctors. Doctors can track vitals: health, weight, etc. Parents can add data such as sleep times or feeding times. By tracking the data, doctors can get a much more accurate picture of the infant’s health, which is less prone to human memory or error. The parent can also mark the occurrence of issues they come across, so the doctors can see exactly what and how frequently the issues occur. In addition, if possible, we want to make a database of common issues from the first 6 months of life so if a parent is unsure if something is wrong they can use the data as well as answering some other questions and the website can calculate if this looks like something that is normal (i.e. the baby is sleeping more or less than the parent thinks is necessary) or if it could be an issue. In addition, such a system would help parents feel more comfortable during a time of high stress by giving them an easy way to contact a doctor, and create automatic flagging for potentially dangerous issues (although direct contact with a doctor will always be recommended in-page). We plan to use SQL for the database, HTML and PHP for the web interface, and Python for the background.
 
 Components:
-Individual Password-protected profiles for each infant 
-Web interface for parents/doctors to input and view user statistics. (HTML, PHP)
-Easy-to-use system for tracking different health statistics, including graphical data representations
-Ability to flag or note abnormalities (including a message to contact EMS or a pediatrician)
-Portion to ask about symptoms against database of common issues.
-Database of Child Health Data (SQL)
-Track category (height, weight, hours of sleep, etc), as well as the date/time of occurrence
-Store symptoms/issues and the date/time they occurred.
-Automatic flagging of possible issues or trends outside of normal range (Python)
-Database of common issues and symptoms for the first 6 months of life.
+*Individual Password-protected profiles for each infant 
+*Web interface for parents/doctors to input and view user statistics. (HTML, PHP)
+*Easy-to-use system for tracking different health statistics, including graphical data representations
+*Ability to flag or note abnormalities (including a message to contact EMS or a pediatrician)
+*Portion to ask about symptoms against database of common issues.
+*Database of Child Health Data (SQL)
+*Track category (height, weight, hours of sleep, etc), as well as the date/time of occurrence
+*Store symptoms/issues and the date/time they occurred.
+*Automatic flagging of possible issues or trends outside of normal range (Python)
+*Database of common issues and symptoms for the first 6 months of life.
