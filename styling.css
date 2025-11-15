@@ -1,0 +1,14 @@
+body{
+    font-family: Georgia, serif;
+}
+
+.portal{
+    text-align: center;
+    font-family: Georgia, serif;
+}
+
+.square{
+    height: 50px;
+    width: 50px;
+    background-color: navy;
+}

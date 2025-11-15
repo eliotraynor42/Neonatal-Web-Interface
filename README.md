@@ -22,3 +22,17 @@ Components:
   * Store symptoms/issues and the date/time they occurred.
 * Automatic flagging of possible issues or trends outside of normal range (Python)
 * Database of common issues and symptoms for the first 6 months of life.
+
+
+Website Components:
+* login_portal.html : The login Portal
+* styling.css: All styling elements go here. 
+  * This is to keep us from trying to hunt them down to tweak later
+* background.py: This is the site I am using for all the behind the scenes stuff
+* Still need to do the databases..... and set literally everything up
+
+Alexandra Notes:
+* I have started working on getting the basic functionality. 
+* If you want, I am keeping any styling stuff in a seperate styling file. 
+* If you see any spelling mistakes no you didn't
+
