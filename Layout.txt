@@ -1,1 +1,40 @@
-[Insert Layout Here]
+Login Page
+* Main webpage build (html/css)
+* Select type of user
+* User/Password section
+    * patient or doctors database
+    * Redirects to relevant page (based on user type)
+
+Patient Page
+* Main webpage build (html/css)
+* Health tracker (data entry)
+    * Empty form (html)
+    * Form is saved to patient database on submission
+* Health info
+    * Call most recent information for patient and display it (php/javascript) and display it
+    * Display any warnings (do calculations based on recent data)
+* Ask doctor
+    * Form is saved to database on submission
+    * Display past messages (including newest on send)
+* Graphical data
+    * Select data components to display
+    * Call relevant data from those components and display in graphical form
+
+Doctor Page
+* Main webpage build (html/css)
+* All notifications
+    * Display all new messages (since last message sent)
+* Patient selection
+    * The rest of the page depends on what is chosen here
+* Health tracker (data entry)
+    * Empty form (html)
+    * Form is saved to patient database on submission
+* Health info
+    * Call most recent information for patient and display it (php/javascript) and display it
+    * Display any warnings (do calculations based on recent data)
+* Ask patient
+    * Form is saved to database on submission
+    * Display past messages (including newest on send)
+* Graphical data
+    * Select data components to display
+    * Call relevant data from those components and display in graphical form
