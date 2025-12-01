@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Head Information -->
+        <title>login_portal</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="styling.css">
+    </head>
+
+    <body>
+        <!-- Build the Top Banner -->
+        <div class="headbanner">
+            <img src="images/logo1.png" alt="NWI Logo" id="logo1">
+            <img src="images/logo2.png" alt="PC Logo" id="logo2">
+        </div>
+
+        <!-- Create Text -->
+        <div class="contentbanner">
+            <p class="portal">Enter Username and Password Below</p> 
+
+            <!-- Build the Login Form -->
+            <form method="POST" class="portal">
+                <select name="loginmode" id="loginmode" class="formitem" text-indent="0">
+                    <!-- <option value="selection" class="portal">Select Sign In Option</option> -->
+                    <option value="patient" class="portal">Patient Portal</option>
+                    <option value="doctor" class="portal">Doctor Portal</option>
+                </select><br>
+                <input type="text" name="username" id="username" class="formitem" placeholder="Username" required><br>
+                <input type="password" name="password" id="password" class="formitem" placeholder="Password" required><br>
+                <input type="submit" name="submit" id="submit" class="formitem" value="Login">
+            </form>
+        </div>
+
+        <!-- Build the Bottom Banner -->
+         <div class="tailbanner">
+            <p>For Help Please Call: +1 (123) 456-7890&nbsp&nbsp</p><br>
+        </div>
+
+    </body>
+</html>
