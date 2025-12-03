@@ -1,17 +1,25 @@
+<!-- Website Login Page 
+
+This is the page that prompts a user to sign in 
+to the rest of the website.
+
+By Eliot Raynor 12/02/25
+-->
+
 <!DOCTYPE html>
 <html>
     <head>
         <!-- Head Information -->
         <title>login_portal</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="styling.css">
+        <link rel="stylesheet" href="/NWI/static/styling.css">
     </head>
 
-    <body>
+    <body>       
         <!-- Build the Top Banner -->
         <div class="headbanner">
-            <img src="images/logo1.png" alt="NWI Logo" id="logo1">
-            <img src="images/logo2.png" alt="PC Logo" id="logo2">
+            <img src="/NWI/static/images/logo1.png" alt="NWI Logo" id="logo1">
+            <img src="/NWI/static/images/logo2.png" alt="PC Logo" id="logo2">
         </div>
 
         <!-- Create Text -->
@@ -19,7 +27,7 @@
             <p class="portal">Enter Username and Password Below</p> 
 
             <!-- Build the Login Form -->
-            <form method="POST" class="portal">
+            <form class="portal" action="/NWI/login" method="POST" accept-charset=utf-8>
                 <select name="loginmode" id="loginmode" class="formitem" text-indent="0">
                     <!-- <option value="selection" class="portal">Select Sign In Option</option> -->
                     <option value="patient" class="portal">Patient Portal</option>
@@ -31,10 +39,26 @@
             </form>
         </div>
 
+        <!-- Display Error if Invalid Login -->
+        <p id="error" class="error"></p>
+        <script>
+            window.onload = function display_err() {
+                let loc = window.location.href.split("err=");
+                if (loc.length < 2) { return };
+
+                let err_val = loc[1];
+                if (err_val == 1) {
+                    document.getElementById("error").innerHTML = "Incorrect Username";
+                }
+                else if (err_val == 2) {
+                    document.getElementById("error").innerHTML = "Incorrect Password";
+                }
+            }
+        </script>
+
         <!-- Build the Bottom Banner -->
          <div class="tailbanner">
-            <p>For Help Please Call: +1 (123) 456-7890&nbsp&nbsp</p><br>
-        </div>
-
+            <p>For Help Please Call: +1 (123) 456-7890 &nbsp&nbsp</p><br>
+        </div>        
     </body>
 </html>
