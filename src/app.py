@@ -27,13 +27,16 @@ def login():
     if success == 0:
         return redirect('/NWI/?err=1')
     elif success == 1:
-        return redirect('/NWI/patient_home?user=%s' %(user_id))
+        return redirect('/NWI/patient_login?user=%s' %(user_id))
     elif success == 2:
-        return redirect('/NWI/doctor_home?user=%s' %(user_id))
+        return redirect('/NWI/doctor_login?user=%s' %(user_id))
     else:
         return redirect('/NWI/?err=2')
 
-# Set the patient scripts
+# Redirect to patient page
+@app.route('/NWI/patient_login', methods=['GET'])
+def patient_route():
+    return redirect('/NWI/')
 # app.add_url_rule('/login_portal')
 
 # Run Flask Listener

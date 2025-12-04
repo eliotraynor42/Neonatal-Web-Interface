@@ -47,5 +47,6 @@
 
 # Notes
 * To access the files outside of the running server (so mainly just to check out the HTML), navigate to `http://localhost/NWI-Debug/`
+    * Just opening the file directly (double clicking the HTML), will likely subvert the css. This may also happen if the server is not running
     * Attempting to submit a form in this mode will throw a 502 error
 * If you get a 440 error at any point, it is likely from an unimplemented page

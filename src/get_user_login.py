@@ -11,6 +11,8 @@ import sqlite3
 def get_user_login(user, password, login_mode):
     print("Hello World")
 
+    return 3, "" # TEMP
+
     # Find user in database and retrieve login value
     conn = sqlite3.connect("patient_database.sql") #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     db = conn.cursor()

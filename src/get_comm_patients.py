@@ -9,6 +9,7 @@ import sys
 import json
 
 def get_comm_patients(doctor_id):
+    #bmes.userdownloadfolder()+"/patient_database.db"
     conn = sqlite3.connect("patient_database.db")
     cur = conn.cursor()
 
