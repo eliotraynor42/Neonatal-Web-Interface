@@ -64,7 +64,7 @@ def doctor_home():
 
 # Solution for opening the browser from https://stackoverflow.com/questions/54235347/open-browser-automatically-when-python-code-is-executed/54235461#54235461
 def open_browser():
-    # webbrowser.open_new("http://127.0.0.1:5000")
+    webbrowser.open_new("http://127.0.0.1:5000")
     return
 
 # Run Flask Listener

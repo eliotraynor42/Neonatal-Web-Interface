@@ -9,18 +9,18 @@ from hashlib import sha256
 import sqlite3
 
 def get_user_login(user, password, login_mode):
-    print("Hello World")
 
-    # Temp for Debug
-    return 1, "5"
+    # # Temp for Debug
+    # return 1, "5"
 
     # Find user in database and retrieve login value
-    conn = sqlite3.connect("patient_database.sql") #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    conn = sqlite3.connect("NWI_DB.db")
     db = conn.cursor()
-    db.execute('SELECT secure, id FROM %s WHERE username=%s' %(login_mode, user))
+    db.execute('SELECT password, id FROM %s WHERE username="%s"' %(login_mode, user))
     try:
-        correct_code = db.fetchall()[0][0]
-        user_id = db.fetchall()[0][1]
+        try_user = db.fetchall()[0]
+        correct_code = try_user[0]
+        user_id = try_user[1]
     except:
         # Reload login page w/ error: wrong username
         return 0, ""
@@ -32,7 +32,7 @@ def get_user_login(user, password, login_mode):
 
     if correct_code == attempt_code:
         # Load user home page
-        if login_mode == "patient":
+        if login_mode == "patients":
             return 1, user_id
         else:
             return 2, user_id
