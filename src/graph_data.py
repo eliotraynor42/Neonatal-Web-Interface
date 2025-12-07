@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
 
-def graph_a(id):
+def graph_data(id):
     pass
     return

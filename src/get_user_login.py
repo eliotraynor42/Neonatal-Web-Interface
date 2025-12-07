@@ -11,7 +11,8 @@ import sqlite3
 def get_user_login(user, password, login_mode):
     print("Hello World")
 
-    return 3, "" # TEMP
+    # Temp for Debug
+    return 1, "5"
 
     # Find user in database and retrieve login value
     conn = sqlite3.connect("patient_database.sql") #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -31,7 +32,7 @@ def get_user_login(user, password, login_mode):
 
     if correct_code == attempt_code:
         # Load user home page
-        if login_mode == "doctor":
+        if login_mode == "patient":
             return 1, user_id
         else:
             return 2, user_id

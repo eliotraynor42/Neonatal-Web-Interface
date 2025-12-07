@@ -10,6 +10,11 @@ def get_patient(patient_id):
     conn = sqlite3.connect("patient_database.db")
     cur = conn.cursor()
 
+    temp = {"patient_id": patient_id,
+            "name": "john doe",
+            "dob": "01/11/12"}
+    return temp
+
     # Selection statement to obtain patient information from the database.
     sql = """
         SELECT patient_id, name, dob, age, length, length_percentile, weight, 

@@ -4,22 +4,158 @@
         <!-- Head Information -->
         <title>patient_portal</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="styling.css">
+        <link rel="stylesheet" href="../static/styling.css">
     </head>
 
     <body>
         <!-- Build the Top Banner -->
         <div class="headbanner">
-            <img src="images/logo1.png" alt="NWI Logo" id="logo1">
-            <img src="images/logo2.png" alt="PC Logo" id="logo2">
+            <img src="../static/images/logo1.png" alt="NWI Logo" id="logo1">
+            <img src="../static/images/logo2.png" alt="PC Logo" id="logo2">
+            <div id="userinfo">
+                {% for info in user_info %}
+                <div>{{info}}</div>
+                {% endfor %}
+            </div>
         </div>
 
-        <!-- Create Text -->
-        
+        <!-- Create Body -->
+        <div class="content">
+
+            <!-- Create Health Tracker -->
+            <div class="infoportal" id="healthtracker">
+                <p class="portal">Health Tracker</p>
+                <div class="infobox">
+                    <p>Add observed health information and press submit. This information will be sent to your doctor.</p>
+                    <form id="healthtrackerform" class="portal" action="/login" method="POST" accept-charset=utf-8> <!-- NOTE, NOT YET INTEGRATED WITH PYTHON -->
+                        <input type="hidden" name="date" id="date" value="">
+                            <script>
+                                const date = new Date().toJSON();
+                                document.getElementById("date").value = date;
+                            </script>
+                        <div id="variable-container">
+                            <div class="variableinput">
+                                <select name="input1_type" class="formitem">
+                                    <option value="other_notes" class="portal">Other or Comment</option>
+                                    <option value="length" class="portal">Length</option>
+                                    <option value="weight" class="portal">Weight</option>
+                                    <option value="head_circumference" class="portal">Head Circumference</option>
+                                </select>
+                                <input type="text" name="input1" class="formitem"><br>
+                            </div>
+                        </div>
+                        <button type="button" class="formitem" onclick="addInputElement()">Add Another Input</button>
+                        <button type="button" class="formitem" onclick="removeLastElement()">Remove Input</button><br>
+                        <input type="submit" name="submit" id="submit" class="formitem" value="Enter Data">
+                    </form>
+
+                    <!-- Solution from https://stackoverflow.com/questions/71500725/adding-elements-to-form-dynamically-with-javascript/71500936#71500936 -->
+                    <!-- Solution edited by perplexity.ai in ai_conversations/dynamic_form -->
+                    <script>
+                        let num_elems = 1;
+                        const container = document.getElementById("variable-container");
+
+                        // Function to Add Next Form Elements
+                        function addInputElement() {
+                            num_elems++;
+                            const wrapper = document.createElement("div");
+                            wrapper.className = "variableinput";
+
+                            // Create Next Select Element
+                            const select = document.createElement("select");
+                            select.name = `input${num_elems}_type`; select.className = "formitem";
+                            const options = [
+                                { value: "other_notes", label: "Other or Comment" },
+                                { value: "length", label: "Length" },
+                                { value: "weight", label: "Weight" },
+                                { value: "head_circumference", label: "Head Circumference" }
+                            ];
+                            options.forEach(opt => {
+                                const o = document.createElement("option");
+                                o.value = opt.value;
+                                o.textContent = opt.label;
+                                select.appendChild(o);
+                            });
+
+                            // Create Next Input Element
+                            const input = document.createElement("input");
+                            input.type = "text"; input.name = `input${num_elems}`;
+                            input.className = "formitem"; //input.value = `${num_elems}`
+                            wrapper.appendChild(select);
+                            wrapper.appendChild(input);
+                            wrapper.appendChild(document.createElement("br"));
+
+                            // Add New Elements
+                            container.appendChild(wrapper);
+                        }
+
+                        // Function to Remove Last Element
+                        function removeLastElement() {
+                            if (num_elems > 1) {
+                                const variableInputs = document.querySelectorAll("#variable-container .variableinput");
+                                const lastWrapper = variableInputs[variableInputs.length - 1];
+                                lastWrapper.remove();
+                                num_elems--;
+                            }
+                        }
+                    </script>
+                </div>
+            </div>
+
+            <!-- Create Health Info -->
+            <div class="infoportal" id="healthinfo">
+                <p class="portal">Health Info</p>
+                <div class="infobox">
+                    {% for info in user_info %}
+                    <p>{{info}}</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Create Ask Doctor -->
+            <div class="infoportal" id="askdoctor">
+                <p class="portal">Ask Doctor</p>
+                <div class="infobox">
+                    <form id="askdoctorform" class="portal" action="/login" method="POST" accept-charset=utf-8> <!-- NOTE, NOT YET INTEGRATED WITH PYTHON -->
+                        <input type="hidden" name="date_comm" value="">
+                            <script> document.getElementById("date_comm").value = date; </script>
+                        <input type="text" name="comm_text" class="formitem" id="commtext" value="Enter Message Here">
+                        <input type="submit" name="submit_comm" class="formitem" value="Send Message">
+                    </form>
+                    <p>Past Messages:</p><br>
+                    {% for message in messages %}
+                    <div>message</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Create Graphical Data -->
+            <div class="infoportal" id="graphicaldata">
+                <p class="portal">Graphical Data</p>
+                <div class="infobox">
+                    <form id="graphdataform" class="portal" action="/login" method="POST" accept-charset=utf-8> <!-- NOTE, NOT YET INTEGRATED WITH PYTHON -->
+                        <select name="graphtype" class="formitem">
+                            <option value="length" class="portal">Length</option>
+                            <option value="length_percentile" class="portal">Length Percentile</option>
+                            <option value="weight" class="portal">Weight</option>
+                            <option value="weight_percentile" class="portal">Weight Percentile</option>
+                            <option value="head_circumference" class="portal">Head Circumference</option>
+                            <option value="head_circumference_percentile" class="portal">Head Circumference Percentile</option>
+                        </select>
+                        <input type="submit" name="submit_comm" class="formitem" value="Send Message">
+                    </form>
+                    <div>
+                        <canvas id="graphdatachart"></canvas>
+                    </div>
+
+                    
+                </div>
+            </div>
+        </div>
 
         <!-- Build the Bottom Banner -->
          <div class="tailbanner">
-            <p>For Help Please Call: +1 (123) 456-7890&nbsp&nbsp</p><br>
+            <p>For Help Please Call: +1 (123) 456-7890 &nbsp&nbsp</p>
         </div>
 
     </body>
