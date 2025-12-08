@@ -105,7 +105,6 @@ body{
 .formitem{
     background-color: #eef3f8;
     margin: 0.2vh 0.3vw;
-    font-family: Georgia, serif;
     text-align: left;
     color: black;
     border-radius: 15px;
@@ -159,6 +158,45 @@ body{
     font-size: clamp(1.2rem, 1.5vw, 1.6rem);
     font-weight: normal;
     margin: 0;
+}
+
+/* Alert Box */
+/* Design from https://www.w3schools.com/howto/howto_js_alert.asp */
+.alert {
+    width: 100vw;
+    height: 5vh;
+    padding: 20px;
+    background-color: #ef695f;
+    color: white;
+    margin-bottom: 0;
+    text-align: right;
+    z-index: 10;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: clamp(1.2rem, 1.5vw, 1.6rem);
+}
+.closebtn {
+    margin-right: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    transition: 0.3s;
+}
+
+/* Back Button */
+.backbutton{
+    background-color: #eef3f8;
+    margin: 0.2vh 0.3vw;
+    text-align: left;
+    color: black;
+    border-radius: 15px;
+    text-indent: 0.5vw;
+    height: 3vh;
+    right: 10vw;
+    z-index: 5;
+    position: absolute;
 }
 
 /* NWI Logo (left top) */

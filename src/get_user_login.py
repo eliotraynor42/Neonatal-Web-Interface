@@ -10,9 +10,6 @@ import sqlite3
 
 def get_user_login(user, password, login_mode):
 
-    # # Temp for Debug
-    # return 1, "5"
-
     # Find user in database and retrieve login value
     conn = sqlite3.connect("NWI_DB.db")
     db = conn.cursor()

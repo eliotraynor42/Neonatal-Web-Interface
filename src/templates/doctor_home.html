@@ -4,18 +4,52 @@
         <!-- Head Information -->
         <title>patient_portal</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="styling.css">
+        <link rel="stylesheet" href="../static/styling.css">
     </head>
 
     <body>
         <!-- Build the Top Banner -->
         <div class="headbanner">
-            <img src="images/logo1.png" alt="NWI Logo" id="logo1">
-            <img src="images/logo2.png" alt="PC Logo" id="logo2">
+            <img src="../static/images/logo1.png" alt="NWI Logo" id="logo1">
+            <img src="../static/images/logo2.png" alt="PC Logo" id="logo2">
+            <div id="userinfo">
+                {% for info in user_info %}
+                <div>{{info}}</div>
+                {% endfor %}
+            </div>
         </div>
 
         <!-- Create Text -->
-        
+        <div class="content">
+
+            <!-- Nofications -->
+            <div class="infoportal" id="healthtracker">
+                <p class="portal">Notifications</p>
+                <div class="infobox">
+                    {% for message in messages %}
+                    <div class="message">
+                        {{message.message}}
+                        <p class="date">{{message.date}}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- List of Patients -->
+            <div class="infoportal" id="healthinfo">
+                <p class="portal">Patients</p>
+                <div class="infobox">
+                    <form id="healthtrackerform" action="/observe_patient" class="portal" method="POST" accept-charset=utf-8>
+                        <select name="input1_type" class="formitem">
+                            {% for patient in patients %}
+                            <option value="other_notes" class="portal" selected>{{patient.name}}</option>
+                            {% endfor %}
+                        </select><br>
+                        <input type="submit" class="formitem" value="View Patient" id="submit">
+                    </form>
+                </div>
+            </div>
+        </div>
 
         <!-- Build the Bottom Banner -->
          <div class="tailbanner">
