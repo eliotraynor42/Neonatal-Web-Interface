@@ -1,6 +1,6 @@
 #Author: Alex Vogel
 
-#Returns all new notifications for a specific doctor.
+#Returns all new notifications for a specific doctor that have not been read.
 #This would be used in the Question portal for the Doctor
 #to show unread notifications for the doctor.
 
@@ -8,31 +8,32 @@ import sqlite3
 import sys
 import json
 
-def get_doctor_notif(doctor_id):
+#Retrieving information from the database can be done through SQL queries by
+#connecting to the database with the sqlite3 package. 
+def get_doctor_notif(id_doctor):
     conn = sqlite3.connect("patient_database.db")
     cur = conn.cursor()
 
     # Selection statement to obtain new notifications for this doctor.
     sql = """
-        SELECT notif_id, doctor_id, message, date, is_read
-        FROM doctor_notifications
-        WHERE doctor_id = ? AND is_read = 0
+        SELECT id_doctor, message, date, is_read
+        FROM Neonatal_Sample_Dataset
+        WHERE id_doctor = ? AND is_read = 0
         ORDER BY date DESC
     """
     
     # Run the SQL query and get the results.
-    cur.execute(sql, (doctor_id,))
+    cur.execute(sql, (id_doctor,))
     rows = cur.fetchall()
     conn.close()
     
     # Building dictionary from retrieved data.
     notifications = [
         {
-            "notif_id": r[0],
-            "doctor_id": r[1],
-            "message": r[2],
-            "date": r[3],
-            "is_read": r[4],
+            "id_doctor": r[0],
+            "message": r[1],
+            "date": r[2],
+            "is_read": r[3],
         }
         for r in rows
     ]
@@ -45,7 +46,7 @@ def get_doctor_notif(doctor_id):
 #with PHP for a html script. 
 if __name__ == "__main__":
     #checks whether the file is being run as a script
-    doctor_id = sys.argv[1]
-    result = get_doctor_notif(doctor_id)
+    id_doctor = sys.argv[1]
+    result = get_doctor_notif(id_doctor)
     print(json.dumps(result))
     #shell_exec() in PHP can capture the printed text as a string. 

@@ -11,31 +11,30 @@ import json
 
 #Retrieving information from the database can be done through SQL queries by
 #connecting to the database with the sqlite3 package. 
-def get_comm_doc(patient_id):
+def get_comm_doc(id_patient):
     conn = sqlite3.connect("patient_database.db")
     cur = conn.cursor()
 
     #Selection statement to obtain communications from the patient database.
     sql = """
-        SELECT comm_id, doctor_id, patient_id, date, message
-        FROM patient_communications
-        WHERE patient_id = ?
+        SELECT id_doctor, id_patient, date, message
+        FROM Neonatal_Sample_Dataset
+        WHERE id_patient = ?
         ORDER BY date DESC
     """
     
     #Run the SQL query and get the results.
-    cur.execute(sql, (patient_id,))
+    cur.execute(sql, (id_patient,))
     rows = cur.fetchall()
     conn.close()
     
     #Building dictionary from retrieved data. 
     communications = [
         {
-            "comm_id": r[0],
-            "doctor_id": r[1],
-            "patient_id": r[2],
-            "date": r[3],
-            "message": r[4],
+            "id_doctor": r[0],
+            "id_patient": r[1],
+            "date": r[2],
+            "message": r[3],
         }
         for r in rows
     ]
@@ -48,7 +47,7 @@ def get_comm_doc(patient_id):
 #with PHP for a html script.  
 if __name__ == "__main__":
     #checks whether the file is being run as a script
-    patient_id = sys.argv[1]
-    result = get_comm_doc(patient_id)
+    id_patient = sys.argv[1]
+    result = get_comm_doc(id_patient)
     print(json.dumps(result))
     #shell_exec() in PHP can capture the printed text as a string. 

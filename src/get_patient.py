@@ -6,45 +6,60 @@ import sqlite3
 import sys
 import json
 
-def get_patient(patient_id):
+#Retrieving information from the database can be done through SQL queries by
+#connecting to the database with the sqlite3 package. 
+def get_patient(id_patient):
     conn = sqlite3.connect("patient_database.db")
     cur = conn.cursor()
 
-    # Selection statement to obtain patient information from the database.
+    # Selection statement to obtain baby information from the database.
     sql = """
-        SELECT patient_id, name, dob, age, length, length_percentile, weight, 
-               weight_percentile, head_circumference, head_circumference_percentile, 
-               diet, allergies, medications, immunizations, current_issues, other_notes
-        FROM patients
-        WHERE patient_id = ?
+        SELECT id_patient, name, gender, gestational_age_weeks,
+               birth_weight_kg, birth_length_cm, birth_head_circumference_cm,
+               date, age_days, weight_kg, length_cm, head_circumference_cm,
+               temperature_c, heart_rate_bpm, respiratory_rate_bpm,
+               oxygen_saturation, feeding_type, feeding_frequency_per_day,
+               urine_output_count, stool_count, jaundice_level_mg_dl,
+               apgar_score, immunizations_done, reflexes_normal, risk_level
+        FROM Neonatal_Sample_Dataset
+        WHERE id_patient = ?
     """
-    
+
     # Run the SQL query and get the result.
-    cur.execute(sql, (patient_id,))
+    cur.execute(sql, (id_patient,))
     row = cur.fetchone()
     conn.close()
-    
-    # Return the patient data as a dictionary if found.
+
+    # Return the baby data as a dictionary if found.
     if row:
-        patient = {
-            "patient_id": row[0],
+        baby = {
+            "id_patient": row[0],
             "name": row[1],
-            "dob": row[2],
-            "age": row[3],
-            "length": row[4],
-            "length_percentile": row[5],
-            "weight": row[6],
-            "weight_percentile": row[7],
-            "head_circumference": row[8],
-            "head_circumference_percentile": row[9],
-            "diet": row[10],
-            "allergies": row[11],
-            "medications": row[12],
-            "immunizations": row[13],
-            "current_issues": row[14],
-            "other_notes": row[15],
+            "gender": row[2],
+            "gestational_age_weeks": row[3],
+            "birth_weight_kg": row[4],
+            "birth_length_cm": row[5],
+            "birth_head_circumference_cm": row[6],
+            "date": row[7],
+            "age_days": row[8],
+            "weight_kg": row[9],
+            "length_cm": row[10],
+            "head_circumference_cm": row[11],
+            "temperature_c": row[12],
+            "heart_rate_bpm": row[13],
+            "respiratory_rate_bpm": row[14],
+            "oxygen_saturation": row[15],
+            "feeding_type": row[16],
+            "feeding_frequency_per_day": row[17],
+            "urine_output_count": row[18],
+            "stool_count": row[19],
+            "jaundice_level_mg_dl": row[20],
+            "apgar_score": row[21],
+            "immunizations_done": row[22],
+            "reflexes_normal": row[23],
+            "risk_level": row[24],
         }
-        return {"patient": patient}
+        return {"baby": baby}
 
 #Next the function return needs to be turned into a command‑line script that can be called from 
 #a PHP script. Since PHP does not understand Python dict data types, the Python return needs
@@ -52,7 +67,7 @@ def get_patient(patient_id):
 #with PHP for a html script. 
 if __name__ == "__main__":
     #checks whether the file is being run as a script
-    patient_id = sys.argv[1]
-    result = get_patient(patient_id)
+    id_patient = sys.argv[1]
+    result = get_patient(id_patient)
     print(json.dumps(result))
     #shell_exec() in PHP can capture the printed text as a string. 
