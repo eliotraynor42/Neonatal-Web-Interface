@@ -87,7 +87,7 @@ def conversation_add():
 
 # Health Tracker Form Submission
 @app.route('/submit_health', methods=['POST'])
-def submit_health():
+def submit_health(vals):
     # Get Data
     vals = request.form
     reference = ['weight_kg', 'length_cm', 'head_circumference_cm', 'temperature_c', 'heart_rate_bpm', 
