@@ -18,6 +18,7 @@ from graph_data import graph_data
 # from get_data import get_data
 # from submit_data import submit_data
 # from list_patients import list_patients
+# from submit_patient_data import submit_patient_data
 
 # Setup Flask
 app = Flask(__name__)
@@ -43,7 +44,7 @@ def login():
     elif success == 1:
         return redirect(url_for('patient_home', user=user_id))
     elif success == 2:
-        return redirect(url_for('doctor_home', user=user_id))
+        return redirect(url_for('doctor_home', user_doc=user_id))
     else:
         return redirect('/?err=2')
 
@@ -55,17 +56,19 @@ def patient_home():
     user_id = request.args.get('user')
     patient_info = get_patient(user_id)
     data = [f'{a}: {b}' for a, b in patient_info.items()]
+    kept_data = data[:3]
     
     # Get message history
-    message_history = get_comm_doc(user_id)
-    messages = [m['message'] for m in message_history]
-        
+    message_history = get_comm_doc(user_id)[::-1]
+    messages = []
+    for m in message_history:
+        messages.append({'message': m['message'], 'date': m['date'], 'from': m['id_doctor']})
+    
     # Return Page
-    return render_template('patient_home.html', user=user_id, user_info=data, messages=messages)
+    return render_template('patient_home.html', user=user_id, user_info=kept_data, messages=messages)
 
 
-# Patient Form Submission
-# Update Graph Data
+# Graph Data Form Submission
 @app.route('/graph_data', methods=['POST'])
 def graph_data_vals():
     user_id = request.form.get('user')
@@ -73,37 +76,69 @@ def graph_data_vals():
     x, y = graph_data(user_id, graph_type)
     return jsonify({'x': x, 'y': y})
 
-# Conversation
+
+# Conversation Form Submission
 @app.route('/convo', methods=['POST'])
 def conversation_add():
-    # ADD A WAY TO SAVE THE NEW CONVERSATION TO THE DATABASE
+    # SEND MESSAGE OUT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     date = request.form.get('date')
     return jsonify({'date': date})
 
-# Health Tracker
+
+# Health Tracker Form Submission
 @app.route('/submit_health', methods=['POST'])
 def submit_health():
-    user_id = request.form.get('user')
-    # ADD A WAY TO SAVE THE NEW DATA TO THE DATABASE
-    warnings = []#["baby in danger", "ahdhsjahlfhjask", "meksnajkdhfjkajkshjkh", "messagemgessage"]
+    # Get Data
+    vals = request.form
+    reference = ['weight_kg', 'length_cm', 'head_circumference_cm', 'temperature_c', 'heart_rate_bpm', 
+                 'respiratory_rate_bpm', 'oxygen_saturation', 'feeding_frequency_per_day', 
+                 'urination_count_per_day', 'stool_count_per_day']
+    submit_data = [None]*10
+
+    # Interpret Data and Send
+    for key in vals.keys():
+        try:
+            ind = reference.index(key)
+            submit_data[ind] = vals.get(key)
+        except ValueError:
+            continue
+    warnings = [':(','warning 2', 'warning 3']#submit_patient_data(submit_data) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
     time = str(datetime.datetime.now().time())[:8]
-    return jsonify({'message': 'Data Submitted %s' %(time), 'warnings': warnings})
+
+    return jsonify({'message': 'Data Submitted at %s' %(time), 'warnings': warnings})
 
 
 # Redirect to doctor page
-@app.route('/doctor_home')
+@app.route('/doctor_home', methods=['GET', 'POST'])
 def doctor_home():
-    user_id = request.args.get('user')
-    return render_template('doctor_home.html', user=user_id)
+    user_id = request.args.get('user_doc')
+
+    # Get doctor notifs
+    message_history = get_doctor_notif(user_id)[::-1]
+    messages = []
+    for m in message_history:
+        messages.append({'message': m['message'], 'date': m['date'], 'from': m['id_patient']})
+    return render_template('doctor_home.html', user_doc=user_id, messages=messages)
 
 
 # Redirect to doctor patient view page
 # Redirect to patient page
-@app.route('/observe_patient', methods=['POST'])
+@app.route('/observe_patient', methods=['GET', 'POST'])
 def observe_patient():
-    user_id = request.args.get('user')
-    patient_id = request.args.get('patient_id')
-    return render_template('doctor_page.html', user=user_id, patient=patient_id)
+    # Get user info
+    user_id = request.form.get('user_doc')
+    patient_id = request.form.get('patient_id')
+    patient_info = get_patient(patient_id)
+    data = [f'{a}: {b}' for a, b in patient_info.items()]
+    kept_data = data[:3]
+    
+    # Get message history
+    message_history = get_comm_doc(patient_id)[::-1]
+    messages = []
+    for m in message_history:
+        messages.append({'message': m['message'], 'date': m['date'], 'from': m['id_doctor']})
+
+    return render_template('doctor_page.html', user=patient_id, user_doc=user_id, user_info=kept_data, messages=messages)
 
 
 # Solution for opening the browser from https://stackoverflow.com/questions/54235347/open-browser-automatically-when-python-code-is-executed/54235461#54235461
