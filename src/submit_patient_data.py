@@ -41,7 +41,7 @@ def submit_patient_data(user_input):
             vals.append(reference_types[i](user_input[i+1]))
             if i >2: 
                 if vals[i+1]<normal_ranges[i-3][0] or normal_ranges[i-3][1]<vals[i+1]: #Will run this for everything after
-                    warnings.append(reference[i])
+                    warnings=("Inputted Data is outside the normal range, please contact your doctor.")
 
 
     data=conn.execute(f"SELECT * FROM patients WHERE patients.id={vals[0]};").fetchone()

@@ -112,7 +112,7 @@ def submit_health():
     warnings = [f"WARNING: {warn} value is concerning. Please contact a doctor immediately" for warn in warnings]
     time = str(datetime.datetime.now().time())[:8]
 
-    return jsonify({'message': 'Data Submitted at %s' %(time), 'warnings': warnings})
+    return jsonify({'message': f'Data Submitted at {time}', 'warnings': warnings})
 
 
 # Redirect to doctor page
