@@ -111,7 +111,7 @@ def submit_health():
     warnings = submit_patient_data(user_input)
     time = str(datetime.datetime.now().time())[:8]
 
-    return jsonify({'message': 'Data Submitted at %s' %(time), 'warnings': warnings})
+    return jsonify({'message': f'Data Submitted at {time}', 'warnings': warnings})
 
 
 # Redirect to doctor page
@@ -160,7 +160,7 @@ def observe_patient():
 
 # Solution for opening the browser from https://stackoverflow.com/questions/54235347/open-browser-automatically-when-python-code-is-executed/54235461#54235461
 def open_browser():
-    # webbrowser.open_new("http://127.0.0.1:5000")
+    webbrowser.open_new("http://127.0.0.1:5000")
     return
 
 
