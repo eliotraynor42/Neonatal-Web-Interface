@@ -17,6 +17,7 @@
                 <div>{{info}}</div>
                 {% endfor %}
             </div>
+            <button class="logoutbutton" onclick="window.location.href = '/';">Sign Out</button>
         </div>
 
         <!-- Create Body -->
@@ -32,7 +33,7 @@
             <div class="infoportal" id="healthtracker">
                 <p class="portal">Health Tracker</p>
                 <div class="infobox">
-                    <p>Add observed health information and press submit. This information will be sent to your doctor.</p>
+                    <!-- <p class="info">Add observed health information and press submit. This information will be sent to your doctor.</p> -->
                     <form id="healthtrackerform" class="portal" method="POST" accept-charset=utf-8>
                         <input type="hidden" name="date" id="date" value="">
                             <script>
@@ -42,12 +43,18 @@
                         <div id="variable-container">
                             <div class="variableinput">
                                 <select name="input1_type" class="formitem">
-                                    <option value="other_notes" class="portal" selected>Other or Comment</option>
-                                    <option value="length" class="portal">Length</option>
-                                    <option value="weight" class="portal">Weight</option>
-                                    <option value="head_circumference" class="portal">Head Circumference</option>
+                                    <option value="weight_kg" class="portal" selected>Weight</option>
+                                    <option value="length_cm" class="portal">Length</option>
+                                    <option value="head_circumference_cm" class="portal">Head Circumference</option>
+                                    <option value="temperature_c" class="portal" selected>Temperature</option>
+                                    <option value="heart_rate_bpm" class="portal">Heart Rate BPM</option>
+                                    <option value="respiratory_rate_bpm" class="portal">Respiratory Rate</option>
+                                    <option value="oxygen_saturation" class="portal">Oxygen Saturation</option>
+                                    <option value="feeding_frequency_per_day" class="portal">Feeding Frequency</option>
+                                    <option value="urination_count_per_day" class="portal">Urination Frequency</option>
+                                    <option value="stool_count_per_day" class="portal">Stool Frequency</option>
                                 </select>
-                                <input type="text" name="input1" id="input1" class="formitem"><br>
+                                <input type="number" name="input1" id="input1" class="formitem"><br>
                             </div>
                         </div>
                         <button type="button" class="formitem" onclick="addInputElement()">Add Another Input</button>
@@ -72,10 +79,16 @@
                             const select = document.createElement("select");
                             select.name = `input${num_elems}_type`; select.className = "formitem";
                             const options = [
-                                { value: "other_notes", label: "Other or Comment" },
-                                { value: "length", label: "Length" },
-                                { value: "weight", label: "Weight" },
-                                { value: "head_circumference", label: "Head Circumference" }
+                                { value: "weight_kg", label: "Weight" },
+                                { value: "length_cm", label: "Length" },
+                                { value: "head_circumference_cm", label: "Head Circumference" },
+                                { value: "temperature_c", label: "Temperature" },
+                                { value: "heart_rate_bpm", label: "Heart Rate" },
+                                { value: "respiratory_rate_bpm", label: "Respiratory Rate" },
+                                { value: "oxygen_saturation", label: "Oxygen Saturation" },
+                                { value: "feeding_frequency_per_day", label: "Feeding Frequency" },
+                                { value: "urination_count_per_day", label: "Urination Count" },
+                                { value: "stool_count_per_day", label: "Stool Count" }
                             ];
                             options.forEach(opt => {
                                 const o = document.createElement("option");
@@ -86,8 +99,8 @@
 
                             // Create Next Input Element
                             const input = document.createElement("input");
-                            input.type = "text"; input.name = `input${num_elems}`;
-                            input.className = "formitem"; //input.value = `${num_elems}`;
+                            input.type = "number"; input.name = `input${num_elems}`;
+                            input.className = "formitem"; // input.value = `${num_elems}`;
                             wrapper.appendChild(select);
                             wrapper.appendChild(input);
                             wrapper.appendChild(document.createElement("br"));
@@ -114,7 +127,7 @@
                 <p class="portal">Health Info</p>
                 <div class="infobox">
                     {% for info in user_info %}
-                    <p>{{info}}</p>
+                    <p class="info">{{info}}</p>
                     {% endfor %}
                 </div>
             </div>
@@ -125,20 +138,20 @@
                 <div class="infobox">
                     <form id="askdoctorform" class="portal" method="POST" accept-charset=utf-8>
                         <input type="hidden" name="date_comm" id="date_comm" value="">
-                            <script> 
+                            <script>
                                 document.addEventListener("DOMContentLoaded", function() {
                                     const date2 = new Date().toJSON();
                                     document.getElementById("date_comm").value = date2;
                                 });
                             </script>
-                        <input type="text" name="comm_text" class="formitem" id="commtext" value="">
-                        <input type="submit" name="submit_comm" class="formitem" value="Send Message">
+                        <textarea name="comm_text" class="textentry" id="commtext" rows="1"></textarea><br>
+                        <input type="submit" name="submit_comm" class="formitem2" value="Send Message">
                     </form>
-                    <p>Past Messages:</p><br>
+                    <p>Past Messages:</p>
                     {% for message in messages %}
                     <div class="message">
-                        {{message.message}}
-                        <p class="date">{{message.date}}</p>
+                        <p class="date">{{message.date}} - Doctor {{message.from}}</p>
+                        <p>{{message.message}}</p>
                     </div>
                     {% endfor %}
                 </div>
@@ -149,22 +162,22 @@
                 <p class="portal">Graphical Data</p>
                 <div class="infobox">
                     <form id="graphdataform" class="portal" method="POST" accept-charset=utf-8>
-                        <select name="graphtype" id="graphtype" class="formitem">
-                            <option value="weight_kg" class="portal" selected>Weight</option>
-                            <option value="length_cm" class="portal">Length</option>
-                            <option value="head_circumference_cm" class="portal">Head Circumference</option>
-                            <option value="temperature_c" class="portal" selected>Temperature</option>
-                            <option value="heart_rate_bpm" class="portal">Heart Rate BPM</option>
-                            <option value="respiratory_rate_bpm" class="portal">Respiratory Rate</option>
-                            <option value="oxygen_saturation" class="portal">Oxygen Saturation</option>
-                            <option value="feeding_frequency_per_day" class="portal">Feeding Frequency</option>
-                            <option value="urination_count_per_day" class="portal">Urination Frequency</option>
-                            <option value="stool_frequency_per_day" class="portal">Stool Frequency</option>
+                        <select name="graphtype" id="graphtype" class="formitem2">
+                            <option value="weight_kg" class="formitem2" selected>Weight</option>
+                            <option value="length_cm" class="formitem2">Length</option>
+                            <option value="head_circumference_cm" class="formitem2">Head Circumference</option>
+                            <option value="temperature_c" class="formitem2" selected>Temperature</option>
+                            <option value="heart_rate_bpm" class="formitem2">Heart Rate BPM</option>
+                            <option value="respiratory_rate_bpm" class="formitem2">Respiratory Rate</option>
+                            <option value="oxygen_saturation" class="formitem2">Oxygen Saturation</option>
+                            <option value="feeding_frequency_per_day" class="formitem2">Feeding Frequency</option>
+                            <option value="urination_count_per_day" class="formitem2">Urination Frequency</option>
+                            <option value="stool_count_per_day" class="formitem2">Stool Frequency</option>
                         </select>
-                        <input type="submit" name="submit_graph" class="formitem" value="Open Graph">
+                        <input type="submit" name="submit_graph" class="formitem2" value="Open Graph">
                     </form>
                     <div>
-                        <canvas id="graphdatachart"></canvas>
+                        <canvas class="graph" id="graphdatachart" height="300"></canvas>
                     </div>
                 </div>
             </div>
@@ -257,7 +270,8 @@
                             warnings = data.warnings;
                             if (warnings.length > 0) {
                                 document.getElementById("warningbox").style.display = "block";
-                                document.getElementById("warningmessage").innerHTML = warnings;
+                                warning_list = warnings.join('\n');
+                                document.getElementById("warningmessage").innerHTML = warning_list;
                             }
 
                             // Reset Form
