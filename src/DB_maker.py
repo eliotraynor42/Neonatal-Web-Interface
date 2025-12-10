@@ -225,7 +225,7 @@ def DB_maker():
                     {b_weights[i]},
                     {b_lengths[i]},
                     {b_heads[i]},
-                    {random.randint(1,4)}
+                    {random.randint(1,5)}
                     );""")
         
     #==========Insert Doctor Data==========#
@@ -269,6 +269,6 @@ def DB_maker():
     password=sha256(login_val).hexdigest() #Writes an encoded password
 
     conn.execute(f"UPDATE patients SET id_doctor=5, username='demo', password='{password}', gender='f' WHERE id=100")
-        
+    conn.execute(f"UPDATE doctors SET password='{password}' WHERE id=5")    
     conn.commit()
     conn.close()

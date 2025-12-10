@@ -15,7 +15,7 @@ from get_patient import get_patient
 from get_user_login import get_user_login
 from graph_data import graph_data
 from get_data import get_data
-from submit_health import submit_patient_data
+from submit_patient_data import submit_patient_data
 from get_patient_list import get_patient_list
 
 # Setup Flask
@@ -83,10 +83,7 @@ def graph_data_vals():
 @app.route('/convo', methods=['POST'])
 def conversation_add():
     # SEND MESSAGE OUT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    user_id = request.form('user')
-    message = request.form('comm_text')
-    date = request.form.get('date_comm')
-    # convo_add(user_id)
+    date = request.form.get('date')
     return jsonify({'date': date})
 
 
@@ -95,19 +92,27 @@ def conversation_add():
 def submit_health():
     # Get Data
     vals = request.form
-    reference = ['weight_kg', 'length_cm', 'head_circumference_cm', 'temperature_c', 'heart_rate_bpm', 
+    reference = ['patient_id','weight_kg', 'length_cm', 'head_circumference_cm', 'temperature_c', 'heart_rate_bpm', 
                  'respiratory_rate_bpm', 'oxygen_saturation', 'feeding_frequency_per_day', 
                  'urination_count_per_day', 'stool_count_per_day']
-    submit_data = [None]*10
+    submit_data = [None]*len(reference)
+    
+    #Vals recieves: "input1_type","input1" etc etc
+    count=1 #Counter for while loop
+    while f"input{count}_type" in vals: #Run through all the input types in vals
+        type=vals[f"input{count}_type"] #Gets whatever the variable type is
+        user_input=vals[f"input{count}"] #Gets whatever the input from the user was
+        submit_data[reference.index(type)]=user_input #Finds where the type is inside reference and stores the user input in the same spot in the data submission variable
+        count+=1 #iterates the 
 
     # Interpret Data and Send
-    for key in vals.keys():
-        try:
-            ind = reference.index(key)
-            submit_data[ind] = vals.get(key)
-        except ValueError:
-            continue
-    warnings = submit_patient_data(100, submit_data)
+    #for key in vals.keys():
+    #    try:
+    #        ind = reference.index(key)
+    #        submit_data[ind] = vals.get(key)
+    #    except ValueError:
+    #        continue
+    warnings = submit_patient_data(submit_data)
     time = str(datetime.datetime.now().time())[:8]
 
     return jsonify({'message': 'Data Submitted at %s' %(time), 'warnings': warnings})
