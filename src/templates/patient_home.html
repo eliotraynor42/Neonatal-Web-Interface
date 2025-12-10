@@ -35,10 +35,10 @@
                 <div class="infobox">
                     <!-- <p class="info">Add observed health information and press submit. This information will be sent to your doctor.</p> -->
                     <form id="healthtrackerform" class="portal" method="POST" accept-charset=utf-8>
-                        <input type="hidden" name="date" id="date" value="">
+                        <input type="hidden" name="date" id="date2" value="">
                             <script>
                                 const date = new Date().toJSON();
-                                document.getElementById("date").value = date;
+                                document.getElementById("date2").value = date;
                             </script>
                         <div id="variable-container">
                             <div class="variableinput">
@@ -57,7 +57,8 @@
                                 <input type="number" name="input1" id="input1" class="formitem"><br>
                             </div>
                         </div>
-                        <input type="hidden" name="user" value="{{ user }}">
+                        <input type="hidden" name="patient_id" value="{{ user }}">
+                        <input type="hidden" name="date" id="date" value="">
                         <button type="button" class="formitem" onclick="addInputElement()">Add Another Input</button>
                         <button type="button" class="formitem" onclick="removeLastElement()">Remove Input</button><br>
                         <input type="submit" name="submit" id="submit" class="formitem" value="Enter Data">
@@ -246,7 +247,7 @@
                     e.preventDefault();
                     
                     // Send form info
-                    $.post("/convo", {user: "{{ user }}", date: $("#date_comm").val()},
+                    $.post("/convo", {user: "{{ user }}", date: $("#date").val()},
 
                         // Recieve Results
                         function(data) {
@@ -263,13 +264,16 @@
                 $(document).on("submit", "#healthtrackerform", function(e) {
                     e.preventDefault();
 
+                    const formData = $(this).serialize();
+
                     // Send form info
-                    $.post("/submit_health", {user: "{{ user }}", date: $("#date_comm").val()},
+                    $.post("/submit_health", formData,
 
                         // Recieve Results
                         function(data) { 
                             document.getElementById("outputmessage").innerHTML = data.message;
                             warnings = data.warnings;
+                            console.log(warnings);
                             if (warnings.length > 0) {
                                 document.getElementById("warningbox").style.display = "block";
                                 warning_list = warnings.join('\n');

@@ -91,28 +91,24 @@ def conversation_add():
 @app.route('/submit_health', methods=['POST'])
 def submit_health():
     # Get Data
-    vals = request.form
-    reference = ['patient_id','weight_kg', 'length_cm', 'head_circumference_cm', 'temperature_c', 'heart_rate_bpm', 
+    patient_id = request.form.get("patient_id")
+    # date = request.form.get("date_comm")
+    reference = ['weight_kg', 'length_cm', 'head_circumference_cm', 'temperature_c', 'heart_rate_bpm', 
                  'respiratory_rate_bpm', 'oxygen_saturation', 'feeding_frequency_per_day', 
                  'urination_count_per_day', 'stool_count_per_day']
-    submit_data = [None]*len(reference)
+    user_input = [patient_id] + [None] * len(reference)    
     
-    #Vals recieves: "input1_type","input1" etc etc
-    count=1 #Counter for while loop
-    while f"input{count}_type" in vals: #Run through all the input types in vals
-        type=vals[f"input{count}_type"] #Gets whatever the variable type is
-        user_input=vals[f"input{count}"] #Gets whatever the input from the user was
-        submit_data[reference.index(type)]=user_input #Finds where the type is inside reference and stores the user input in the same spot in the data submission variable
-        count+=1 #iterates the 
+    # Format Data
+    count = 1
+    while f"input{count}_type" in request.form:
+        var_name = request.form.get(f"input{count}_type")
+        value = request.form.get(f"input{count}")
+        if var_name in reference and value not in ("", None):
+            idx = reference.index(var_name)
+            user_input[idx + 1] = value
+        count += 1
 
-    # Interpret Data and Send
-    #for key in vals.keys():
-    #    try:
-    #        ind = reference.index(key)
-    #        submit_data[ind] = vals.get(key)
-    #    except ValueError:
-    #        continue
-    warnings = submit_patient_data(submit_data)
+    warnings = submit_patient_data(user_input)
     time = str(datetime.datetime.now().time())[:8]
 
     return jsonify({'message': 'Data Submitted at %s' %(time), 'warnings': warnings})
