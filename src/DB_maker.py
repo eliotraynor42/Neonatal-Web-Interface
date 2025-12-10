@@ -257,8 +257,4 @@ def DB_maker():
     conn.execute(f"UPDATE patients SET id_doctor=5, username='demo', password='{password}', gender='f' WHERE id=100")
         
     conn.commit()
-    return(dbfile)
-
-if __name__=="__main__": #Runs if being run directly by another program
-    import json; #Get Json this will make php have an easier time with the output
-    print(json.dumps(DB_maker())); #Using json will put the output in a useable type for php
+    
