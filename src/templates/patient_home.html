@@ -273,7 +273,6 @@
                         function(data) { 
                             document.getElementById("outputmessage").innerHTML = data.message;
                             warnings = data.warnings;
-                            console.log(warnings);
                             if (warnings.length > 0) {
                                 document.getElementById("warningbox").style.display = "block";
                                 warning_list = warnings.join('\n');

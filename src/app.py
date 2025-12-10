@@ -82,7 +82,7 @@ def graph_data_vals():
 # Conversation Form Submission
 @app.route('/convo', methods=['POST'])
 def conversation_add():
-    # SEND MESSAGE OUT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # SEND MESSAGE OUT
     date = request.form.get('date')
     return jsonify({'date': date})
 
@@ -109,6 +109,7 @@ def submit_health():
         count += 1
 
     warnings = submit_patient_data(user_input)
+    warnings = [f"WARNING: {warn} value is concerning. Please contact a doctor immediately" for warn in warnings]
     time = str(datetime.datetime.now().time())[:8]
 
     return jsonify({'message': 'Data Submitted at %s' %(time), 'warnings': warnings})
@@ -160,7 +161,7 @@ def observe_patient():
 
 # Solution for opening the browser from https://stackoverflow.com/questions/54235347/open-browser-automatically-when-python-code-is-executed/54235461#54235461
 def open_browser():
-    # webbrowser.open_new("http://127.0.0.1:5000")
+    webbrowser.open_new("http://127.0.0.1:5000")
     return
 
 

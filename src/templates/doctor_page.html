@@ -37,11 +37,10 @@
                 <div class="infobox">
                     <!-- <p class="info">Add observed health information and press submit. This information will be sent to your doctor.</p> -->
                     <form id="healthtrackerform" class="portal" method="POST" accept-charset=utf-8>
-                        <input type="hidden" name="date" id="date" value="">
-                        <input type="hidden" name="patient_id" id="patient_id" value="{{ user }}">
+                        <input type="hidden" name="date" id="date2" value="">
                             <script>
                                 const date = new Date().toJSON();
-                                document.getElementById("date").value = date;
+                                document.getElementById("date2").value = date;
                             </script>
                         <div id="variable-container">
                             <div class="variableinput">
@@ -60,6 +59,8 @@
                                 <input type="number" name="input1" id="input1" class="formitem"><br>
                             </div>
                         </div>
+                        <input type="hidden" name="patient_id" value="{{ user }}">
+                        <input type="hidden" name="date" id="date" value="">
                         <button type="button" class="formitem" onclick="addInputElement()">Add Another Input</button>
                         <button type="button" class="formitem" onclick="removeLastElement()">Remove Input</button><br>
                         <input type="submit" name="submit" id="submit" class="formitem" value="Enter Data">
@@ -140,6 +141,7 @@
                 <p class="portal">Message Patient</p>
                 <div class="infobox">
                     <form id="askdoctorform" class="portal" method="POST" accept-charset=utf-8>
+                        <input type="hidden" name="id" value="{{ user }}">
                         <input type="hidden" name="date_comm" id="date_comm" value="">
                             <script>
                                 document.addEventListener("DOMContentLoaded", function() {
@@ -247,7 +249,7 @@
                     e.preventDefault();
                     
                     // Send form info
-                    $.post("/convo", {user: "{{ user }}", date: $("#date_comm").val()},
+                    $.post("/convo", {user: "{{ user }}", date: $("#date").val()},
 
                         // Recieve Results
                         function(data) {
@@ -264,8 +266,10 @@
                 $(document).on("submit", "#healthtrackerform", function(e) {
                     e.preventDefault();
 
+                    const formData = $(this).serialize();
+
                     // Send form info
-                    $.post("/submit_health", $("#healthtrackerform").serialize(),
+                    $.post("/submit_health", formData,
 
                         // Recieve Results
                         function(data) { 

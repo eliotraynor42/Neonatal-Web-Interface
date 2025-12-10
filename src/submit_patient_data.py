@@ -54,7 +54,7 @@ def submit_patient_data(user_input):
 
      #==========Update Patient Data==========#
     # Debugging help from perplexity.ai, convo recorded in ai_conversations/debug_submit
-    # conn.execute("INSERT OR IGNORE INTO patient_visit_data (weight_kg) VALUES (1)")
+    # conn.execute("INSERT OR IGNORE INTO patient_visit_data (weight_kg) VALUES (1)") # Debugging
     try:
         conn.execute("""
             INSERT INTO patient_visit_data (
