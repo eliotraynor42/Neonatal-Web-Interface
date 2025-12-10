@@ -6,7 +6,7 @@
 import sqlite3
 from datetime import datetime,date
 
-def submit_health(patient_id,vals):
+def submit_patient_data(patient_id,vals):
     # Connect to the database
     conn = sqlite3.connect("NWI_DB.db")
     db = conn.cursor()

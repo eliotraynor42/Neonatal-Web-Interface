@@ -18,7 +18,7 @@ from graph_data import graph_data
 # from get_data import get_data
 # from submit_data import submit_data
 # from list_patients import list_patients
-# from submit_patient_data import submit_patient_data
+from submit_health import submit_patient_data
 
 # Setup Flask
 app = Flask(__name__)
@@ -87,7 +87,7 @@ def conversation_add():
 
 # Health Tracker Form Submission
 @app.route('/submit_health', methods=['POST'])
-def submit_health(vals):
+def submit_health():
     # Get Data
     vals = request.form
     reference = ['weight_kg', 'length_cm', 'head_circumference_cm', 'temperature_c', 'heart_rate_bpm', 
@@ -102,7 +102,7 @@ def submit_health(vals):
             submit_data[ind] = vals.get(key)
         except ValueError:
             continue
-    warnings = [':(','warning 2', 'warning 3']#submit_patient_data(submit_data) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+    warnings = submit_patient_data(submit_data) #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
     time = str(datetime.datetime.now().time())[:8]
 
     return jsonify({'message': 'Data Submitted at %s' %(time), 'warnings': warnings})

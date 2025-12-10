@@ -4,6 +4,7 @@
 # By Alexandra Nickel 
 # =================================== #
 
+
 # Class Libaries Import
 import sys,os; sys.path.append(os.environ['BMESAHMETDIR']);
 import bmes;
@@ -20,7 +21,7 @@ conn = sqlite3.connect(dbfile); #Gets the DB connection
 cur=conn.cursor
 
 
-## Variables and Constants for tabel generation:
+## Variables and Constants for table; generation:
 
 #Downloads a list of random names
 temp_names=bmes.downloadurl('https://gist.githubusercontent.com/elifiner/cc90fdd387449158829515782936a9a4/raw/fea1da1a3c4ce5c8e470f679a8e1bc741281a609/first-names.txt');
