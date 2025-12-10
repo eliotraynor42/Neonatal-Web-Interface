@@ -20,7 +20,7 @@ def submit_patient_data(patient_id,vals):
     data=conn.execute(f"SELECT * FROM patients WHERE patients.id={patient_id};").fetchone()
 
       # I want the 5th column of the database not the ID column
-    birthdate=datetime.strptime(data[5],"%m/%d/%Y").date() #Takes the birth date and turns it into a format python can use
+    birthdate=datetime.strptime(data[5],"%Y/%m/%d").date() #Takes the birth date and turns it into a format python can use
     today=date.today() #Gets todays date
     new_age=(today-birthdate).days #Gets the age in days of the patient
 

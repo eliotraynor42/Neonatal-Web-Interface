@@ -57,6 +57,7 @@
                                 <input type="number" name="input1" id="input1" class="formitem"><br>
                             </div>
                         </div>
+                        <input type="hidden" name="user" value="{{ user }}">
                         <button type="button" class="formitem" onclick="addInputElement()">Add Another Input</button>
                         <button type="button" class="formitem" onclick="removeLastElement()">Remove Input</button><br>
                         <input type="submit" name="submit" id="submit" class="formitem" value="Enter Data">
@@ -137,6 +138,7 @@
                 <p class="portal">Ask Doctor</p>
                 <div class="infobox">
                     <form id="askdoctorform" class="portal" method="POST" accept-charset=utf-8>
+                        <input type="hidden" name="id" value="{{ user }}">
                         <input type="hidden" name="date_comm" id="date_comm" value="">
                             <script>
                                 document.addEventListener("DOMContentLoaded", function() {

@@ -192,7 +192,7 @@ def DB_maker():
                     '{pf_types[random.randint(0,2)]}',
                     {feeding_frequency_per_day},
                     {urination_count_per_day},
-                    {stool_count_per_day}
+                    {stool_count_per_day},
                     '{y_n[random.randint(0,1)]}',
                     '{y_n[random.randint(0,1)]}',
                     '{r_level[random.randint(0,1)]}'

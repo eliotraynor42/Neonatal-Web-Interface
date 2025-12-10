@@ -83,7 +83,10 @@ def graph_data_vals():
 @app.route('/convo', methods=['POST'])
 def conversation_add():
     # SEND MESSAGE OUT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    date = request.form.get('date')
+    user_id = request.form('user')
+    message = request.form('comm_text')
+    date = request.form.get('date_comm')
+    # convo_add(user_id)
     return jsonify({'date': date})
 
 
@@ -104,7 +107,7 @@ def submit_health():
             submit_data[ind] = vals.get(key)
         except ValueError:
             continue
-    warnings = submit_patient_data(submit_data)
+    warnings = submit_patient_data(100, submit_data)
     time = str(datetime.datetime.now().time())[:8]
 
     return jsonify({'message': 'Data Submitted at %s' %(time), 'warnings': warnings})
