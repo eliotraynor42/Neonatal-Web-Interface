@@ -38,6 +38,10 @@ def DB_maker():
     u_range=[6,10]; #Infant Urination Frequency (Per Day) Range: https://www.parents.com/breastfeeding-and-wet-diapers-whats-normal-431621#:~:text=Urination%20After%20the%20First%20Week,to%20three%20hours%2C%20is%20fine.
     st_range=[1,8]; #Infant Stool Freguency (Per Day) Range: https://www.childrenscolorado.org/just-ask-childrens/articles/baby-poop-guide/
     gender=["f","m"]; #Infant Gender
+    pf_types=["Breast Feeding","Formula","Mixed"]; #Primary Feeding Types
+    y_n=["Yes","No"]; #Yes or No
+    r_level=["Healthy","Under Watch","At Risk"]; #Risk Level
+
 
     #Doctor Data:
     first=['Beverly','Dana','Meredith','Jemma','Jane']
@@ -83,9 +87,13 @@ def DB_maker():
                 heart_rate_bpm INTEGER,
                 respiratory_rate_bpm INTEGER,
                 oxygen_saturation INTEGER,
+                primary_feeding_type VARCHAR(30),
                 feeding_frequency_per_day INTEGER,
                 urination_count_per_day INTEGER,
-                stool_count_per_day INTEGER
+                stool_count_per_day INTEGER,
+                immunizations_needed VARCHAR(30),
+                reflexes_normal VARCHAR(30),
+                risk_Level VARCHAR(30)
                 );""")
 
     #Doctors
@@ -163,9 +171,13 @@ def DB_maker():
                     heart_rate_bpm,
                     respiratory_rate_bpm,
                     oxygen_saturation,
+                    primary_feeding_type,
                     feeding_frequency_per_day,
                     urination_count_per_day,
-                    stool_count_per_day
+                    stool_count_per_day,
+                    immunizations_needed,
+                    reflexes_normal,
+                    risk_Level
                     ) VALUES (
                     {patient_id+1},
                     '{last_visit[patient_id]}',
@@ -177,9 +189,13 @@ def DB_maker():
                     {heart_rate_bpm},
                     {respiratory_rate_bpm},
                     {oxygen_saturation},
+                    '{pf_types[random.randint(0,2)]}',
                     {feeding_frequency_per_day},
                     {urination_count_per_day},
                     {stool_count_per_day}
+                    '{y_n[random.randint(0,1)]}',
+                    '{y_n[random.randint(0,1)]}',
+                    '{r_level[random.randint(0,1)]}'
                     );""")
 
     #==========Insert Generate and Insert Patients Data
