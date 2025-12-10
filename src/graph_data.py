@@ -6,6 +6,7 @@
 # =================================== #
 
 import sqlite3
+from bmes_ahmet_loader import *
 
 def graph_data(id, graphtype=""):
     # Return if graphtype is empty
@@ -15,7 +16,7 @@ def graph_data(id, graphtype=""):
     id = 1 # TEMPORARY FOR DEBUGGING
 
     # Connect to the database
-    conn = sqlite3.connect("NWI_DB.db")
+    conn = sqlite3.connect(bmes.userdownloaddir() + "/NWI_DB.db")
     db = conn.cursor()
 
     # Search for x and y values

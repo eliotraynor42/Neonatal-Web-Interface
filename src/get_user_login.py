@@ -7,11 +7,12 @@
 
 from hashlib import sha256
 import sqlite3
+from bmes_ahmet_loader import *
 
 def get_user_login(user, password, login_mode):
 
     # Find user in database and retrieve login value
-    conn = sqlite3.connect("NWI_DB.db")
+    conn = sqlite3.connect(bmes.userdownloaddir() + "/NWI_DB.db")
     db = conn.cursor()
     db.execute('SELECT password, id FROM %s WHERE username="%s"' %(login_mode, user))
     try:

@@ -5,9 +5,10 @@
 import sqlite3
 import sys
 import json
+from bmes_ahmet_loader import *
 
 def get_patient(patient_id):
-    conn = sqlite3.connect("NWI_DB.db")
+    conn = sqlite3.connect(bmes.userdownloaddir() + "/NWI_DB.db")
     cur = conn.cursor()
 
     # Selection statement to obtain patient information from the database.
@@ -18,7 +19,7 @@ def get_patient(patient_id):
     """
     
     # Run the SQL query and get the result.
-    cur.execute(sql, (patient_id))
+    cur.execute(sql, (patient_id,))
     row = cur.fetchone()
     conn.close()
     

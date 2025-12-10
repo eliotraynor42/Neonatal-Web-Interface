@@ -7,11 +7,12 @@
 import sqlite3
 import sys
 import json
+from bmes_ahmet_loader import *
 
 #Retrieving information from the database can be done through SQL queries by
 #connecting to the database with the sqlite3 package. 
 def get_doctor_notif(id_doctor):
-    conn = sqlite3.connect("NWI_DB.db")
+    conn = sqlite3.connect(bmes.userdownloaddir() + "/NWI_DB.db")
     cur = conn.cursor()
 
     # Selection statement to obtain new notifications for this doctor.

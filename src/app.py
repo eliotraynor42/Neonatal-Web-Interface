@@ -10,15 +10,13 @@ from flask import Flask, redirect, render_template, request, url_for, jsonify
 import os, webbrowser
 import datetime
 from get_comm_doc import get_comm_doc
-from get_comm_patients import get_comm_patients
 from get_doctor_notif import get_doctor_notif
 from get_patient import get_patient
 from get_user_login import get_user_login
 from graph_data import graph_data
-# from get_data import get_data
-# from submit_data import submit_data
-# from list_patients import list_patients
+from get_data import get_data
 from submit_health import submit_patient_data
+from get_patient_list import get_patient_list
 
 # Setup Flask
 app = Flask(__name__)
@@ -57,6 +55,10 @@ def patient_home():
     patient_info = get_patient(user_id)
     data = [f'{a}: {b}' for a, b in patient_info.items()]
     kept_data = data[:3]
+
+    # Get all user info
+    patient_data = get_data(user_id)[0]
+    all_data = [f'{a}: {b}' for a, b in patient_data.items()]
     
     # Get message history
     message_history = get_comm_doc(user_id)[::-1]
@@ -65,7 +67,7 @@ def patient_home():
         messages.append({'message': m['message'], 'date': m['date'], 'from': m['id_doctor']})
     
     # Return Page
-    return render_template('patient_home.html', user=user_id, user_info=kept_data, messages=messages)
+    return render_template('patient_home.html', user=user_id, user_info=kept_data, user_info2=all_data, messages=messages)
 
 
 # Graph Data Form Submission
@@ -102,7 +104,7 @@ def submit_health():
             submit_data[ind] = vals.get(key)
         except ValueError:
             continue
-    warnings = submit_patient_data(submit_data) #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+    warnings = submit_patient_data(submit_data)
     time = str(datetime.datetime.now().time())[:8]
 
     return jsonify({'message': 'Data Submitted at %s' %(time), 'warnings': warnings})
@@ -118,7 +120,14 @@ def doctor_home():
     messages = []
     for m in message_history:
         messages.append({'message': m['message'], 'date': m['date'], 'from': m['id_patient']})
-    return render_template('doctor_home.html', user_doc=user_id, messages=messages)
+    
+    # Get patient list
+    patient_list = get_patient_list(user_id)
+    patients = []
+    for p in patient_list:
+        patients.append({'id': p['id'], 'name': p['name']})
+
+    return render_template('doctor_home.html', user_doc=user_id, messages=messages, patients=patients)
 
 
 # Redirect to doctor patient view page
@@ -138,7 +147,11 @@ def observe_patient():
     for m in message_history:
         messages.append({'message': m['message'], 'date': m['date'], 'from': m['id_doctor']})
 
-    return render_template('doctor_page.html', user=patient_id, user_doc=user_id, user_info=kept_data, messages=messages)
+    # Get all user info
+    patient_data = get_data(user_id)[0]
+    all_data = [f'{a}: {b}' for a, b in patient_data.items()]
+
+    return render_template('doctor_page.html', user=patient_id, user_doc=user_id, user_info=kept_data, user_info2=all_data, messages=messages)
 
 
 # Solution for opening the browser from https://stackoverflow.com/questions/54235347/open-browser-automatically-when-python-code-is-executed/54235461#54235461

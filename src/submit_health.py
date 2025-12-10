@@ -5,10 +5,11 @@
 # =================================== #
 import sqlite3
 from datetime import datetime,date
+from bmes_ahmet_loader import *
 
 def submit_patient_data(patient_id,vals):
     # Connect to the database
-    conn = sqlite3.connect("NWI_DB.db")
+    conn = sqlite3.connect(bmes.userdownloaddir() + "/NWI_DB.db")
     db = conn.cursor()
 
 
@@ -36,3 +37,4 @@ def submit_patient_data(patient_id,vals):
     call += str(vals[9]) +");"
 
     conn.execute(call)
+    conn.close()

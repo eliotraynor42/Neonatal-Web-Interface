@@ -180,6 +180,15 @@ body::-webkit-scrollbar{
     overflow-y: auto;
 }
 
+/* Info Text */
+.info{
+    color: black;
+    font-size: clamp(1.2rem, 1.5vw, 1.6rem);
+    margin: 0;
+    margin-bottom: 0.8vh;
+    padding-left: 1.5vw;
+}
+
 /* Alert Box */
 /* Design from https://www.w3schools.com/howto/howto_js_alert.asp */
 .alert {

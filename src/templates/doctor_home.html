@@ -41,7 +41,6 @@
                     <form id="healthtrackerform" action="/observe_patient" class="portal" method="POST" accept-charset="utf-8">
                         <input type="hidden" name="user_doc" value="{{ user_doc }}">
                         <select name="patient_id" class="formitem">
-                            <option value="0" selected>0</option> <!-- TEMPORARY DEBUG VALUE -->
                             {% for patient in patients %}
                             <option value="{{ patient.id }}">{{ patient.name }}</option>
                             {% endfor %}

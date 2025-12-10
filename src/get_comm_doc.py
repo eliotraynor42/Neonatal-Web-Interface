@@ -8,11 +8,12 @@
 import sqlite3
 import sys
 import json
+from bmes_ahmet_loader import *
 
 #Retrieving information from the database can be done through SQL queries by
 #connecting to the database with the sqlite3 package. 
 def get_comm_doc(id_patient):
-    conn = sqlite3.connect("NWI_DB.db")
+    conn = sqlite3.connect(bmes.userdownloaddir() + "/NWI_DB.db")
     cur = conn.cursor()
 
     #Selection statement to obtain communications from the patient database.
@@ -24,7 +25,7 @@ def get_comm_doc(id_patient):
     """
     
     #Run the SQL query and get the results.
-    cur.execute(sql, (id_patient))
+    cur.execute(sql, (id_patient,))
     rows = cur.fetchall()
     conn.close()
     

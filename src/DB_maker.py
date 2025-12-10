@@ -6,8 +6,7 @@
 
 #==========Setup Libraries and Sqlite==========#
 # Class Libaries Import
-import sys,os; sys.path.append(os.environ['BMESAHMETDIR']);
-import bmes;
+from bmes_ahmet_loader import *
 
 #Other Libraries
 import sqlite3 #Database Connection
@@ -249,12 +248,11 @@ def DB_maker():
                     )""")
 
     #==========Update To Run Demo==========#
-    for j in range(10):
-            temp_pass=temp_pass.join(random.choice(pick_chars)) #Generates a random password of length 10
-    login_val="demo".encode('utf-8')+temp_pass.encode('utf-8')
+
+    login_val="demo".encode('utf-8')+"demo".encode('utf-8')
     password=sha256(login_val).hexdigest() #Writes an encoded password
 
     conn.execute(f"UPDATE patients SET id_doctor=5, username='demo', password='{password}', gender='f' WHERE id=100")
         
     conn.commit()
-    
+    conn.close()
