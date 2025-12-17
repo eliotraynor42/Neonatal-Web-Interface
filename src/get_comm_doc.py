@@ -41,13 +41,8 @@ def get_comm_doc(id_patient):
     ]
 
     return communications
-
-print(get_comm_doc('0'))
     
-#Next the function return needs to be turned into a command‑line script that can be called from 
-#a PHP script. Since PHP does not understand Python dict data types, the Python return needs
-#to be converted into a JSON which is a standardized format that can be decoded
-#with PHP for a html script.  
+# The following has been removed from the final instance
 # if __name__ == "__main__":
 #     #checks whether the file is being run as a script
 #     id_patient = sys.argv[1]

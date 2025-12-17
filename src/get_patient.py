@@ -37,13 +37,10 @@ def get_patient(patient_id):
         }
         return patient
 
-#Next the function return needs to be turned into a command‑line script that can be called from 
-#a PHP script. Since PHP does not understand Python dict data types, the Python return needs
-#to be converted into a JSON which is a standardized format that can be decoded
-#with PHP for a html script. 
-if __name__ == "__main__":
-    #checks whether the file is being run as a script
-    patient_id = sys.argv[1]
-    result = get_patient(patient_id)
-    print(json.dumps(result))
-    #shell_exec() in PHP can capture the printed text as a string. 
+# The following has been removed from the final instance
+# if __name__ == "__main__":
+#     #checks whether the file is being run as a script
+#     patient_id = sys.argv[1]
+#     result = get_patient(patient_id)
+#     print(json.dumps(result))
+#     #shell_exec() in PHP can capture the printed text as a string. 

@@ -12,7 +12,7 @@ def get_patient_list(user_id):
     # Find user in database and retrieve values
     conn = sqlite3.connect(bmes.userdownloaddir() + "/NWI_DB.db")
     db = conn.cursor()
-    db.execute('SELECT id, name FROM patients WHERE id_doctor="%s"' %(user_id))
+    db.execute('SELECT id, name FROM patients WHERE id_doctor=?', (user_id,))
     rows = db.fetchall()
     
     # Create output

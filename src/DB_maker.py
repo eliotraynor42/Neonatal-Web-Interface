@@ -14,14 +14,20 @@ import datetime #Needed to generate random dates
 import random #Needed to generate data
 import string #Needed for password generation
 from hashlib import sha256 #Needed for password generation
+from pathlib import Path
 
 
 
 def DB_maker():
 
+    # Checks if the database exists already
+    db_dir = Path(bmes.userdownloaddir() + "/NWI_DB.db")
+    if db_dir.exists():
+        return db_dir
+
     # open a database connection
-    dbfile= bmes.userdownloaddir() + '/NWI_DB.db'; #Makes the files
-    conn = sqlite3.connect(dbfile); #Gets the DB connection
+    dbfile= str(db_dir) #Makes the files
+    conn = sqlite3.connect(dbfile) #Gets the DB connection
     cur=conn.cursor()
 
     #==========Variable Setup==========#
@@ -103,7 +109,7 @@ def DB_maker():
                 password VARCHAR(30),
                 last_name VARCHAR(30),
                 first_name VARCHAR(30),
-                hospital VARCHAR(30) );""");
+                hospital VARCHAR(30) );""")
 
     #Comms
     conn.execute("""CREATE TABLE comms (
@@ -160,7 +166,7 @@ def DB_maker():
         feeding_frequency_per_day=random.randint(ffr_range[0],ffr_range[1]); #Generates a feeding frequncy (per day)
         urination_count_per_day=random.randint(u_range[0],u_range[1]); #Generates a urination frequency (per day)
         stool_count_per_day=random.randint(st_range[0],st_range[1]); #Generates a stool frequency (per day)
-        conn.execute(f"""INSERT INTO patient_visit_data (
+        conn.execute("""INSERT INTO patient_visit_data (
                     id_patient,
                     date,
                     age_days,
@@ -178,25 +184,13 @@ def DB_maker():
                     immunizations_needed,
                     reflexes_normal,
                     risk_Level
-                    ) VALUES (
-                    {patient_id+1},
-                    '{last_visit[patient_id]}',
-                    {age_days},
-                    {weight_kg},
-                    {length_cm},
-                    {head_circumference_cm},
-                    {temperature_c},
-                    {heart_rate_bpm},
-                    {respiratory_rate_bpm},
-                    {oxygen_saturation},
-                    '{pf_types[random.randint(0,2)]}',
-                    {feeding_frequency_per_day},
-                    {urination_count_per_day},
-                    {stool_count_per_day},
-                    '{y_n[random.randint(0,1)]}',
-                    '{y_n[random.randint(0,1)]}',
-                    '{r_level[random.randint(0,1)]}'
-                    );""")
+                    ) VALUES ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? );""", 
+                    (patient_id+1, last_visit[patient_id], age_days,
+                            weight_kg, length_cm, head_circumference_cm, temperature_c, 
+                            heart_rate_bpm, respiratory_rate_bpm, oxygen_saturation, 
+                            pf_types[random.randint(0,2)], feeding_frequency_per_day, 
+                            urination_count_per_day, stool_count_per_day, y_n[random.randint(0,1)],
+                            y_n[random.randint(0,1)], r_level[random.randint(0,1)]))
 
     #==========Insert Generate and Insert Patients Data
     for i in range(len(names)):
@@ -206,7 +200,7 @@ def DB_maker():
             temp_pass=temp_pass.join(random.choice(pick_chars)) #Generates a random password of length 10
         login_val=username.encode('utf-8')+temp_pass.encode('utf-8')
         password=sha256(login_val).hexdigest() #Writes an encoded password
-        conn.execute(f"""INSERT INTO patients (
+        conn.execute("""INSERT INTO patients (
                     username,
                     password,
                     name,
@@ -216,17 +210,9 @@ def DB_maker():
                     birth_length_cm,
                     birth_head_circumference_cm,
                     id_doctor
-                    ) VALUES (
-                    '{username}',
-                    '{password}',
-                    '{names[i]}',
-                    '{gender[random.randint(0,1)]}',
-                    '{birthdays[i]}',
-                    {b_weights[i]},
-                    {b_lengths[i]},
-                    {b_heads[i]},
-                    {random.randint(1,5)}
-                    );""")
+                    ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? );""", 
+                    (username, password, names[i], gender[random.randint(0,1)], 
+                     birthdays[i], b_weights[i], b_lengths[i], b_heads[i], random.randint(1,5)))
         
     #==========Insert Doctor Data==========#
     for i in range(5):
@@ -235,23 +221,19 @@ def DB_maker():
             doctor_temp_pass=doctor_temp_pass.join(random.choice(pick_chars)) #Generates a random password of length 10
         doctor_login_val=doctor_usernames[i].encode('utf-8')+doctor_temp_pass.encode('utf-8')
         doctor_password=sha256(doctor_login_val).hexdigest() #Writes an encoded password
-        conn.execute(f"""INSERT INTO doctors (
+        conn.execute("""INSERT INTO doctors (
                     username,
                     password,
                     last_name,
                     first_name,
                     hospital
                     ) VALUES (
-                    '{doctor_usernames[i]}',
-                    '{doctor_password}',
-                    '{last[i]}',
-                    '{first[i]}',
-                    '{hospitals[i]}'
-                    );""")
+                    ?, ?, ?, ?, ? );""", 
+                    (doctor_usernames[i], doctor_password, last[i], first[i], hospitals[i]))
 
     #==========Insert Comms Data==========#
     for i in range(3):
-        conn.execute(f"""INSERT INTO comms (
+        conn.execute("""INSERT INTO comms (
                     id_doctor,
                     id_patient,
                     date,
@@ -259,16 +241,18 @@ def DB_maker():
                     ) VALUES (
                     5,
                     100,
-                    '{datetime.date.today()}',
-                    '{messages[i]}'
-                    )""")
+                    ?,
+                    ?
+                    )""", (datetime.date.today(), messages[i]))
 
     #==========Update To Run Demo==========#
 
     login_val="demo".encode('utf-8')+"demo".encode('utf-8')
     password=sha256(login_val).hexdigest() #Writes an encoded password
 
-    conn.execute(f"UPDATE patients SET id_doctor=5, username='demo', password='{password}', gender='f' WHERE id=100")
-    conn.execute(f"UPDATE doctors SET password='{password}' WHERE id=5")    
+    conn.execute("UPDATE patients SET id_doctor=5, username='demo', password=?, gender='f' WHERE id=100", (password,))
+    conn.execute("UPDATE doctors SET password=? WHERE id=5", (password,))    
     conn.commit()
     conn.close()
+
+    return db_dir

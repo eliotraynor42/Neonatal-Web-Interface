@@ -14,6 +14,6 @@ def send_message(message):
     conn = sqlite3.connect(bmes.userdownloaddir() + "/NWI_DB.db")
     conn.cursor()
 
-    conn.execute("INSERT INTO comms(message) VALUE ('{message}')")
+    conn.execute("INSERT INTO comms(message) VALUES ( ? )", (message,))
     conn.commit()
     conn.execute()

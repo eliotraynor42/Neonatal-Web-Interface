@@ -14,7 +14,7 @@ def get_user_login(user, password, login_mode):
     # Find user in database and retrieve login value
     conn = sqlite3.connect(bmes.userdownloaddir() + "/NWI_DB.db")
     db = conn.cursor()
-    db.execute('SELECT password, id FROM %s WHERE username="%s"' %(login_mode, user))
+    db.execute(f'SELECT password, id FROM {login_mode} WHERE username=?', (user,))
     try:
         try_user = db.fetchall()[0]
         correct_code = try_user[0]

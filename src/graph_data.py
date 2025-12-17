@@ -13,8 +13,6 @@ def graph_data(id, graphtype=""):
     if graphtype == "" or graphtype == None:
         return [0], [0]
 
-    id = 1 # TEMPORARY FOR DEBUGGING
-
     # Connect to the database
     conn = sqlite3.connect(bmes.userdownloaddir() + "/NWI_DB.db")
     db = conn.cursor()
